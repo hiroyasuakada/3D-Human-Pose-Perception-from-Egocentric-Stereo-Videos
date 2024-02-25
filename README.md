@@ -57,5 +57,5 @@ The pose predictions will be saved in `./results/UnrealEgoData2_test_pose (raw a
 
 The pose predictions will be saved in `./results/UnrealEgoData_rw_test_pose (raw and zip versions)`.
 
-**To obtain the quantitative results of your methods, please follow the instructions in [our benchmark challenge page](https://unrealego.mpi-inf.mpg.de/).**
+*For quantitative results of your methods, please follow the instructions in [our benchmark challenge page](https://unrealego.mpi-inf.mpg.de/) and submit a zip version.**
 
