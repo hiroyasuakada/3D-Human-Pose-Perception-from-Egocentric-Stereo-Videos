@@ -2,7 +2,7 @@
 
 Official PyTorch inference code of our CVPR 2024 paper, "3D Human Pose Perception from Egocentric Stereo Videos".
 
-![img](doc/overview_setting.png)
+![img](doc/overview_setup.png)
 
 **For any questions, please contact the first author, Hiroyasu Akada [hakada@mpi-inf.mpg.de] .**
 
