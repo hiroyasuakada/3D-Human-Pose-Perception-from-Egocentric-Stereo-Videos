@@ -95,7 +95,6 @@ def save_pose_json(opt, model, data, list_joints):
             save_json_base_name
         )
 
-        print(save_json_path)
         if not os.path.exists(os.path.dirname(save_json_path)):
             os.makedirs(os.path.dirname(save_json_path))
 
@@ -120,7 +119,7 @@ if __name__ == "__main__":
 
     if opt.test_pose_dir_name == "UnrealEgoData2_test_pose":
         list_joints = list_joints_unrealego2
-    elif opt.test_pose_dir_name == "UnrealEgoData_realworld_test_pose":
+    elif opt.test_pose_dir_name == "UnrealEgoData_rw_test_pose":
         list_joints = list_joints_unrealego_rw
     else:
         raise ValueError('Dataset {} not recognized'.format(opt.test_pose_dir_name))
