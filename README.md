@@ -43,6 +43,8 @@ You can download the **UnrealEgo2/UnrealEgo-RW datasets** on [our benchmark chal
 
         bash scripts/test/unrealego2_pose/unrealego2_pose-qa-avg-df_data-ue2_seq5_skip3_B32_lr2-4_pred-seq_local-device_pad.sh
 
+The pose predictions will be saved in `./results/UnrealEgoData2_test_pose (raw and zip versions)`. 
+
 #### Inference on UnrealEgo-RW test dataset
 
         # Without fine-tuning
@@ -50,4 +52,8 @@ You can download the **UnrealEgo2/UnrealEgo-RW datasets** on [our benchmark chal
 
         # With fine-tuning        
         bash scripts/test/unrealego2_pose_finetuning/unrealego2_pose-qa-avg-df_data-ue2_seq5_skip3_B32_lr2-4_pred-seq_local-device_pad_finetuning_epoch5-5.sh
+
+The pose predictions will be saved in `./results/UnrealEgoData_rw_test_pose (raw and zip versions)`. 
+
+**To obtain the quantitative results of your methods, please follow the instructions in [our benchmark challenge page](https://unrealego.mpi-inf.mpg.de/).**
 
