@@ -2,7 +2,7 @@
 #SBATCH -p gpu20
 #SBATCH --gres gpu:1
 #SBATCH -c 16
-#SBATCH -t 0-00:59:55
+#SBATCH -t 0-23:59:55
 #SBATCH -o slurm/output_test_%j.txt
 #SBATCH --mem 64G
 

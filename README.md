@@ -14,9 +14,9 @@ Official PyTorch inference code of our CVPR 2024 paper, **"3D Human Pose Percept
     @inproceedings{hakada2024unrealego2,
       title = {3D Human Pose Perception from Egocentric Stereo Videos},
       author = {Akada, Hiroyasu and Wang, Jian and Golyanik, Vladislav and Theobalt, Christian},
-      booktitle = {Computer Vision and Pattern Recognition (CVPR)}, 
+      booktitle = {Computer Vision and Pattern Recognition (CVPR)},
       year = {2024}
-    } 
+    }
 ```
 
 
@@ -25,17 +25,19 @@ Official PyTorch inference code of our CVPR 2024 paper, **"3D Human Pose Percept
 
 ### Download
 
-You can download the **UnrealEgo2/UnrealEgo-RW datasets** on [our benchmark challenge page](https://unrealego.mpi-inf.mpg.de/). 
+You can download the **UnrealEgo2/UnrealEgo-RW datasets** on [our benchmark challenge page](https://unrealego.mpi-inf.mpg.de/).
 
 
 ## Implementation
 
-### Dependencies 
+### Dependencies
+
+We tested our code with the following dependencies:
 
 - Python 3.9
 - Ubuntu 18.04
-- PyTorch 1.6.0
-- Cuda 10.1
+- PyTorch 2.0.0
+- Cuda 11.7
 
 ### Inference
 
@@ -43,17 +45,17 @@ You can download the **UnrealEgo2/UnrealEgo-RW datasets** on [our benchmark chal
 
         bash scripts/test/unrealego2_pose/unrealego2_pose-qa-avg-df_data-ue2_seq5_skip3_B32_lr2-4_pred-seq_local-device_pad.sh
 
-The pose predictions will be saved in `./results/UnrealEgoData2_test_pose (raw and zip versions)`. 
+The pose predictions will be saved in `./results/UnrealEgoData2_test_pose (raw and zip versions)`.
 
 #### Inference on UnrealEgo-RW test dataset
 
         # Without fine-tuning
         bash scripts/test/unrealego2_pose/unrealego2_pose-qa-avg-df_data-ue-rw_seq5_skip3_B32_lr2-4_pred-seq_local-device_pad.sh
 
-        # With fine-tuning        
+        # With fine-tuning
         bash scripts/test/unrealego2_pose_finetuning/unrealego2_pose-qa-avg-df_data-ue2_seq5_skip3_B32_lr2-4_pred-seq_local-device_pad_finetuning_epoch5-5.sh
 
-The pose predictions will be saved in `./results/UnrealEgoData_rw_test_pose (raw and zip versions)`. 
+The pose predictions will be saved in `./results/UnrealEgoData_rw_test_pose (raw and zip versions)`.
 
 **To obtain the quantitative results of your methods, please follow the instructions in [our benchmark challenge page](https://unrealego.mpi-inf.mpg.de/).**
 
