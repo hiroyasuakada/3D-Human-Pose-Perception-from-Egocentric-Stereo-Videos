@@ -28,7 +28,7 @@ Official PyTorch inference code of our CVPR 2024 paper, **"3D Human Pose Percept
 You can download the **UnrealEgo2/UnrealEgo-RW datasets** on [our benchmark challenge page](https://unrealego.mpi-inf.mpg.de/).
 
 
-## Depths from Metashape
+## Depths from SfM/Metashape
 
 You can donwload depth data from SfM/Metashape described in our paper.
 
@@ -37,6 +37,8 @@ You can donwload depth data from SfM/Metashape described in our paper.
 
         bash download_unrealego2_test_sfm.sh
         bash download_unrealego_rw_test_sfm.sh
+
+Note that these depth data are different from the synthetic depth maps available on [our benchmark challenge page](https://unrealego.mpi-inf.mpg.de/).
 
 
 ## Implementation
