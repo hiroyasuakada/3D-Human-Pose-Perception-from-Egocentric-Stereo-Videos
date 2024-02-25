@@ -160,5 +160,5 @@ cython_debug/
 #.idea/
 
 slurm
-logs/*
+log/*
 results/*
