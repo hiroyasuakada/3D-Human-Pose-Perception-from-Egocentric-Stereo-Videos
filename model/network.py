@@ -81,15 +81,7 @@ def init_net(net, opt, init_type='normal', gpu_ids=[], init_ImageNet=True):
         init_weights(net.after_backbone, opt, init_type)
         print('   ... also using ImageNet initialization for the backbone')
 
-    if opt.use_ddp:
-        net = torch.nn.SyncBatchNorm.convert_sync_batchnorm(net)
-        net = net.to(opt.local_rank)
-        net = torch.nn.parallel.DistributedDataParallel(
-            net,
-            device_ids=[opt.local_rank],
-            find_unused_parameters=True
-            )
-    elif len(gpu_ids) > 0:
+    if len(gpu_ids) > 0:
         assert(torch.cuda.is_available())
         net.cuda()
 
@@ -370,9 +362,6 @@ class TemporalPoseEstimatorQADF(nn.Module):
 
         self.seq_len = opt.seq_len
         self.num_heatmap = opt.num_heatmap
-        self.pred_seq_pose = opt.pred_seq_pose
-        self.use_single_query = opt.use_single_query
-        self.use_depth_padding_mask = opt.use_depth_padding_mask
         self.num_depth_channels = 2
 
         self.with_bn = True
@@ -390,7 +379,6 @@ class TemporalPoseEstimatorQADF(nn.Module):
         self.conv5_depth = make_conv_layer(in_channels=128, out_channels=256, kernel_size=4, stride=2, padding=1, with_bn=self.with_bn)
 
         self.transformer = PoseTransformerQADF(
-            query_adaptation=opt.query_adaptation,
             seq_len=opt.seq_len,
             d_input=512,
             d_input_depth=256,
@@ -402,9 +390,6 @@ class TemporalPoseEstimatorQADF(nn.Module):
             num_decoder_layers=opt.dec_layers,
             normalize_before=opt.pre_norm,
             return_intermediate_dec=True,
-            use_tgt_mask=opt.use_tgt_mask,
-            use_single_query=self.use_single_query,
-            use_depth_padding_mask=self.use_depth_padding_mask,
         )
 
         self.pose_fc1 = make_fc_layer(in_feature=256, out_feature=128, with_relu=self.with_pose_relu, with_bn=False)
@@ -412,17 +397,8 @@ class TemporalPoseEstimatorQADF(nn.Module):
         self.pose_fc3 = torch.nn.Linear(64, 3)
 
 
-    def forward(self,
-                input_video_left,
-                input_video_right,
-                video_feature_stereo,
-                sfm_depth_left,
-                sfm_depth_mask_left,
-                sfm_depth_right,
-                sfm_depth_mask_right,
-                torch_labels,
-        ):
-
+    def forward(self, input_video_left, input_video_right, video_feature_stereo,
+                sfm_depth_left, sfm_depth_mask_left, sfm_depth_right, sfm_depth_mask_right, torch_labels):
 
         # RGB Stereo: left (B*L, C, H, W) + right (B*L, C, H, W) -> stereo (2*B*L, C, H, W)
         input_video_stereo = torch.cat([input_video_left, input_video_right], dim=0)
@@ -449,25 +425,10 @@ class TemporalPoseEstimatorQADF(nn.Module):
         # Process in Transformer Decoder
         x = self.transformer(x, video_feature_stereo, d, torch_labels)[0]  # pose feature (B, L * Pose 16, C)
 
-        if self.use_single_query:
-            x_pose = self.pose_fc1(x)
-            x_pose = self.pose_fc2(x_pose)
-            x_pose = self.pose_fc3(x_pose)
-            x_pose = rearrange(x_pose, "b (l p) c -> b l p c", l=int(1), p=int(self.num_heatmap + 1))
-
-        else:
-            if self.pred_seq_pose:
-                x_pose = self.pose_fc1(x)
-                x_pose = self.pose_fc2(x_pose)
-                x_pose = self.pose_fc3(x_pose)
-                x_pose = rearrange(x_pose, "b (l p) c -> b l p c", l=self.seq_len, p=int(self.num_heatmap + 1))
-            else:
-                x = rearrange(x, "b (l p) c -> b l p c", l=self.seq_len, p=int(self.num_heatmap + 1))
-                x = x[:, -1]
-                x_pose = self.pose_fc1(x)
-                x_pose = self.pose_fc2(x_pose)
-                x_pose = self.pose_fc3(x_pose)
-                x_pose = rearrange(x_pose, "b (l p) c -> b l p c", l=int(1), p=int(self.num_heatmap + 1))
+        x_pose = self.pose_fc1(x)
+        x_pose = self.pose_fc2(x_pose)
+        x_pose = self.pose_fc3(x_pose)
+        x_pose = rearrange(x_pose, "b (l p) c -> b l p c", l=self.seq_len, p=int(self.num_heatmap + 1))
 
         return x_pose  # pose (B, L, Pose 16, 3) or pose (B, 1, Pose 16, 3)
 

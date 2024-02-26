@@ -26,10 +26,6 @@ class UnrealEgo2PoseQADepthModel(BaseModel):
 
         self.model_names = ['HeatMap', 'Pose']
 
-        self.eval_key = "mpjpe"
-
-        self.cm2mm = 10
-
         # define the transform network
         self.net_HeatMap = network.define_HeatMap(opt, model=opt.model)
         self.net_Pose = network.define_Pose(opt, model=opt.model)
@@ -95,6 +91,5 @@ class UnrealEgo2PoseQADepthModel(BaseModel):
             )
 
             self.pred_video_pose = torch.unsqueeze(pred_video_pose[:, -1], 1)
-            if self.opt.pred_seq_pose:
-                self.pred_video_pose_past = pred_video_pose[:, 0:-1]
+            self.pred_video_pose_past = pred_video_pose[:, 0:-1]
 

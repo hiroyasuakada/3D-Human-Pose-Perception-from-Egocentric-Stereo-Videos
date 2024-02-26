@@ -119,7 +119,7 @@ if __name__ == "__main__":
 
     if opt.test_pose_dir_name == "UnrealEgoData2_test_pose":
         list_joints = list_joints_unrealego2
-    elif opt.test_pose_dir_name == "UnrealEgoData_rw_test_pose":
+    elif opt.test_pose_dir_name == "UnrealEgoData_realworld_test_pose":
         list_joints = list_joints_unrealego_rw
     else:
         raise ValueError('Dataset {} not recognized'.format(opt.test_pose_dir_name))

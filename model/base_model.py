@@ -71,7 +71,7 @@ class BaseModel(nn.Module):
                 save_path = os.path.join(self.save_dir, save_filename)
                 net = getattr(self, 'net_' + name)
 
-                if self.opt.use_ddp or self.opt.compile:
+                if self.opt.compile:
                     torch.save(net.state_dict(), save_path)
                 else:
                     torch.save(net.cpu().state_dict(), save_path)

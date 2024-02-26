@@ -25,7 +25,7 @@ class BaseOptions():
                                 help='gpu ids: e.g. 0, 1, 2 use -1 for CPU')
         self.parser.add_argument('--model', type=str, default='unrealego2_pose_qa_df',
                                 help='choose which model to use')
-        self.parser.add_argument('--type_local_pose', type=str, default='gt_local_pose',
+        self.parser.add_argument('--type_local_pose', type=str, default='gt_local_device_pose',
                                 help='[gt_local_device_pose|gt_local_pose]')
         self.parser.add_argument('--init_ImageNet', action='store_true',
                                 help='If true, use ImageNet initialization for the backbone')
@@ -38,8 +38,6 @@ class BaseOptions():
         self.parser.add_argument('--path_to_trained_heatmap_left', type=str, default=None,
                                 help='path to weights of the trained heatmap estimator')
         self.parser.add_argument('--path_to_trained_heatmap_right', type=str, default=None,
-                                help='path to weights of the trained heatmap estimator')
-        self.parser.add_argument('--path_to_trained_autoencoder', type=str, default=None,
                                 help='path to weights of the trained heatmap estimator')
 
         ### dataset parameters ###
@@ -83,51 +81,19 @@ class BaseOptions():
                                 help='dropout rate for transformer')
         self.parser.add_argument('--pre_norm', action='store_true',
                                 help='If true, use pre norm')
-        self.parser.add_argument('--query_adaptation', type=str, default=None,
-                                help='network initialization [None|average|temporal]')
-        self.parser.add_argument('--use_tgt_mask', action='store_true',
-                                help='If true, use tgt mask')
-        self.parser.add_argument('--pred_seq_pose', action='store_true',
-                                help='predict sequential poses if True, or single pose')
-        self.parser.add_argument('--use_single_query', action='store_true',
-                                help='if True, use one set of queries')
-        self.parser.add_argument('--use_depth_padding_mask', action='store_true',
-                                help='if True, use depth padding mask')
-
-        ### display parameter define
-        self.parser.add_argument('--display_winsize', type=int, default=256,
-                                help='display window size')
-        self.parser.add_argument('--display_id', type=int, default=1,
-                                help='display id of the web')
-        self.parser.add_argument('--display_port', type=int, default=8097,
-                                help='visidom port of the web display')
-        self.parser.add_argument('--display_single_pane_ncols', type=int, default=0,
-                                help='if positive, display all images in a single visidom web panel')
-
-        ### experiment
-        self.parser.add_argument('--experiment', action='store_true')
 
         ### other settings
-        self.parser.add_argument('--inference', action='store_true',
-                                help='estimate pose as inference, do not load gt poses, in general used for visualization of predicted 3D pose')
-        self.parser.add_argument('--no_wandb', action='store_true',
-                                help='If true, do not use wandb')
         self.parser.add_argument('--use_slurm', action='store_true',
                                 help='If true, use slurm cluster')
         self.parser.add_argument('--use_amp', action='store_true',
                                 help='Use AMP FP16 training')
         self.parser.add_argument('--init_scale', type=float, default=65536.0,
                                 help='init scale for gradscaler in amp')
-        self.parser.add_argument('--use_ddp', action='store_true',
-                                help='Use Distributed Data Parallel',)
         self.parser.add_argument('--compile', action='store_true',
                                 help='compile network for faster training with Pytorch2.0')
         self.parser.add_argument("--seq_len_test_eval_start", type=int, default=0,
                                 help="sequence length used as a criterion for fair evaluation with temporal models")
-        self.parser.add_argument('--camera_left_calib_file', type=str,
-                                default='/CT/UnrealEgo/work/UnrealEgoPose/main/utils/fisheye/fisheye.calibration_UEP-realworld_left.json')
-        self.parser.add_argument('--camera_right_calib_file', type=str,
-                                default='/CT/UnrealEgo/work/UnrealEgoPose/main/utils/fisheye/fisheye.calibration_UEP-realworld_right.json')
+
 
     def parse(self):
         if not self.initialized:

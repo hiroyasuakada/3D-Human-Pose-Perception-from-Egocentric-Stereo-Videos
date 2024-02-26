@@ -19,8 +19,6 @@ python predict_pose.py \
     --metadata_dir /CT/UnrealEgo/static00/UnrealEgoData_realworld_metadata \
     --depth_dir_name unrealego_heatmap_shared_ue-rw_B16_epoch5-5 \
     --path_to_trained_heatmap ./log/unrealego_heatmap_shared_ue-rw_B16_epoch5-5/best_net_HeatMap.pth \
-    --camera_left_calib_file /CT/UnrealEgo/work/UnrealEgoPose/main/utils/fisheye/fisheye.calibration_UEP-realworld_left.json \
-    --camera_right_calib_file /CT/UnrealEgo/work/UnrealEgoPose/main/utils/fisheye/fisheye.calibration_UEP-realworld_right.json \
     --use_slurm \
     --use_amp \
     --init_ImageNet \
@@ -28,9 +26,6 @@ python predict_pose.py \
     --batch_size 1 \
     --seq_len 5 \
     --num_frame_skip 3 \
-    --query_adaptation average \
-    --pred_seq_pose \
-    --use_depth_padding_mask \
 
 
 

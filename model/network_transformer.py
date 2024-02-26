@@ -319,19 +319,16 @@ def trunc_normal_(tensor, mean=0., std=1., a=-2., b=2.):
 
 class PoseTransformerQADF(nn.Module):
 
-    def __init__(self, query_adaptation=None, seq_len=1, d_input=512, d_input_depth=256, d_model=256, nhead=8, num_encoder_layers=6,
+    def __init__(self, seq_len=1, d_input=512, d_input_depth=256, d_model=256, nhead=8, num_encoder_layers=6,
                 num_decoder_layers=6, dim_feedforward=1024, dropout=0.1,
                 activation="relu", normalize_before=False,
-                return_intermediate_dec=False, use_tgt_mask=False, use_single_query=False, use_depth_padding_mask=False):
+                return_intermediate_dec=False):
         super().__init__()
 
-        self.query_adaptation = query_adaptation
         self.seq_len = seq_len
         self.d_model = d_model
         self.nhead = nhead
-        self.use_tgt_mask = use_tgt_mask
-        self.use_single_query=use_single_query
-        self.use_depth_padding_mask = use_depth_padding_mask
+        self.tgt_mask = None
 
         if return_intermediate_dec:
             self.num_intermediate = int(6)
@@ -339,28 +336,18 @@ class PoseTransformerQADF(nn.Module):
             self.num_intermediate = int(1)
 
         self.num_keypoints = 16
-        if self.use_single_query:
-            num_queries = self.num_keypoints
-        else:
-            num_queries = self.num_keypoints * seq_len
+        num_queries = self.num_keypoints * seq_len
         num_patches = 4 * 4 * 2 * seq_len + 2 * 2 * 2 * seq_len
-
-        if self.use_tgt_mask:
-            self.tgt_mask = self.get_tgt_mask(self.seq_len, self.num_keypoints)
-            print("create tgt mask")
-        else:
-            self.tgt_mask = None
 
         self.input_proj = nn.Conv2d(d_input, d_model, kernel_size=1)
         self.input_proj_depth = nn.Conv2d(d_input_depth, d_model, kernel_size=1)
         self.pos_embed = nn.Parameter(torch.randn(1, num_patches, d_model) * .02)
         self.query_embed = nn.Embedding(num_queries, d_model)
 
-        if self.query_adaptation is not None:
-            self.conv_1x1 = nn.Sequential(
-                    nn.Conv2d(1024, d_model, 1, padding=0),
-                    nn.LeakyReLU(negative_slope=0.2),
-                )
+        self.conv_1x1 = nn.Sequential(
+                nn.Conv2d(1024, d_model, 1, padding=0),
+                nn.LeakyReLU(negative_slope=0.2),
+            )
 
         self.feat_fc = nn.Linear(d_model*seq_len, d_model)
         self.query_fc = nn.Sequential(
@@ -393,41 +380,37 @@ class PoseTransformerQADF(nn.Module):
 
         bs = src_depth_cat.size()[1]
 
-        if self.use_depth_padding_mask:
-            assert torch_labels is not None
-            num_seq_src = src.size()[0]
-            num_seq_depth = depth.size()[0]
-            depth_padding_mask = self.get_depth_padding_mask(self.seq_len, bs, num_seq_src, num_seq_depth, torch_labels)
-        else:
-            depth_padding_mask = None
+
+        assert torch_labels is not None
+        num_seq_src = src.size()[0]
+        num_seq_depth = depth.size()[0]
+        depth_padding_mask = self.get_depth_padding_mask(self.seq_len, bs, num_seq_src, num_seq_depth, torch_labels)
+
 
         pos_embed = rearrange(self.pos_embed, "b p c -> p b c")
         query_embed = self.query_embed.weight.unsqueeze(1).repeat(1, bs, 1)
 
-        if self.query_adaptation is not None:  # process video_feature_stereo (B*L, C*2, H/32, W/32)
-            vfs_conv_1x1 = self.conv_1x1(vfs)
-            vfs = rearrange(vfs_conv_1x1, "(b l) c h w -> b l c h w", l=self.seq_len)  # # vfs: torch.Size([2, 3, 256, 8, 8])
+        # process video_feature_stereo (B*L, C*2, H/32, W/32)
+        vfs_conv_1x1 = self.conv_1x1(vfs)
+        vfs = rearrange(vfs_conv_1x1, "(b l) c h w -> b l c h w", l=self.seq_len)  # # vfs: torch.Size([2, 3, 256, 8, 8])
 
-            list_vfs_pool = []
-            for i in range(self.seq_len):
-                vfs_i = vfs[:, i]
-                vfs_i = F.adaptive_avg_pool2d(vfs_i, (1, 1))
-                list_vfs_pool.append(vfs_i)
+        list_vfs_pool = []
+        for i in range(self.seq_len):
+            vfs_i = vfs[:, i]
+            vfs_i = F.adaptive_avg_pool2d(vfs_i, (1, 1))
+            list_vfs_pool.append(vfs_i)
 
-            vfs_cat = torch.cat(list_vfs_pool, dim=1)  # vfs cat: torch.Size([2, 768, 1, 1])
-            vfs_cat = vfs_cat.squeeze()  # vfs cat: torch.Size([2, 768])
-            vfs_ref = self.feat_fc(vfs_cat)  # vfs ref: torch.Size([2, 256])
-            vfs_ref = vfs_ref.unsqueeze(0)  # vfs ref: torch.Size([1, 2, 256])
-            query_embed = self.query_fc(query_embed + vfs_ref)  # # query embed: torch.Size([48, 2, 256])
+        vfs_cat = torch.cat(list_vfs_pool, dim=1)  # vfs cat: torch.Size([2, 768, 1, 1])
+        vfs_cat = vfs_cat.squeeze()  # vfs cat: torch.Size([2, 768])
+        vfs_ref = self.feat_fc(vfs_cat)  # vfs ref: torch.Size([2, 256])
+        vfs_ref = vfs_ref.unsqueeze(0)  # vfs ref: torch.Size([1, 2, 256])
+        query_embed = self.query_fc(query_embed + vfs_ref)  # # query embed: torch.Size([48, 2, 256])
 
         tgt = torch.zeros_like(query_embed)
         memory = src_depth_cat
         hs = self.decoder(tgt, memory, pos=pos_embed, tgt_mask=self.tgt_mask, query_pos=query_embed, memory_key_padding_mask=depth_padding_mask)
 
-        if self.use_single_query:
-            hs = rearrange(hs, "i (l p) b c -> i b (l p) c", i=self.num_intermediate, l=int(1))
-        else:
-            hs = rearrange(hs, "i (l p) b c -> i b (l p) c", i=self.num_intermediate, l=self.seq_len)
+        hs = rearrange(hs, "i (l p) b c -> i b (l p) c", i=self.num_intermediate, l=self.seq_len)
 
         return hs
 
