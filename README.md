@@ -54,13 +54,16 @@ We tested our code with the following dependencies:
 
 ### Inference
 
+#### Trained models
+
+You can download [our trained models](https://drive.google.com/drive/folders/1NQ08KHKNl3iyrcWzgMlUfCoFlQnn97ve?usp=drive_link). Please save them in `./log/(experiment_name)`.
+
 #### Inference on UnrealEgo2 test dataset
 
         bash scripts/test/unrealego2_pose-qa-avg-df_data-ue2_seq5_skip3_B32_lr2-4_pred-seq_local-device_pad.sh
 
-            --data_dir [path to UnrealEgoData2_test_rgb]
-            --metadata_dir [path to UnrealEgoData2_test_sfm]
-            --path_to_trained_heatmap [path to unrealego_heatmap_shared_ue2_B16_epoch5-5_1/best_net_HeatMap.pth]
+            --data_dir [path to the `UnrealEgoData2_test_rgb` dir]
+            --metadata_dir [path to the `UnrealEgoData2_test_sfm` dir]
 
 Please modify the arguments above. The pose predictions will be saved in `./results/UnrealEgoData2_test_pose (raw and zip versions)`.
 
@@ -70,18 +73,15 @@ Please modify the arguments above. The pose predictions will be saved in `./resu
   
         bash scripts/test/unrealego2_pose-qa-avg-df_data-ue-rw_seq5_skip3_B32_lr2-4_pred-seq_local-device_pad.sh
 
-            --data_dir [path to UnrealEgoData_rw_test_rgb]
-            --metadata_dir [path to UnrealEgoData_rw_test_sfm]
-            --path_to_trained_heatmap [path to unrealego_heatmap_shared_ue-rw_B16_epoch5-5/best_net_HeatMap.pth]
+            --data_dir [path to the `UnrealEgoData_rw_test_rgb` dir]
+            --metadata_dir [path to the `UnrealEgoData_rw_test_sfm` dir]
 
 - Model with pre-training on UnrealEgo2
   
         bash scripts/test/unrealego2_pose-qa-avg-df_data-ue2_seq5_skip3_B32_lr2-4_pred-seq_local-device_pad_finetuning_epoch5-5.sh
 
-            --data_dir [path to UnrealEgoData_rw_test_rgb]
-            --metadata_dir [path to UnrealEgoData_rw_test_sfm]
-            --path_to_trained_heatmap [path to unrealego_heatmap_shared_ue2_B16_epoch5-5_finetuning_epoch1-1/best_net_HeatMap.pth]
-            --path_to_trained_pose [path to unrealego2_pose-qa-avg-df_data-ue2_seq5_skip3_B32_lr2-4_pred-seq_local-device_pad/best_net_Pose.pth]
+            --data_dir [path to the `UnrealEgoData_rw_test_rgb` dir]
+            --metadata_dir [path to the `UnrealEgoData_rw_test_sfm` dir]
 
 Please modify the arguments above. The pose predictions will be saved in `./results/UnrealEgoData_rw_test_pose (raw and zip versions)`.
 
