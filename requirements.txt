@@ -1,4 +1,4 @@
-numpy==1.22.4
-Pillow==9.0.0
-natsort==8.1.0
-einops==0.6.0
+numpy
+Pillow
+natsort
+einops
