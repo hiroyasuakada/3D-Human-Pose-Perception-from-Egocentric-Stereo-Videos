@@ -54,21 +54,36 @@ We tested our code with the following dependencies:
 
 ### Inference
 
+#### Trained models
+
+You can download [our trained models](https://drive.google.com/drive/folders/1NQ08KHKNl3iyrcWzgMlUfCoFlQnn97ve?usp=drive_link). Please save them in `./log/(experiment_name)`.
+
 #### Inference on UnrealEgo2 test dataset
 
-        bash scripts/test/unrealego2_pose/unrealego2_pose-qa-avg-df_data-ue2_seq5_skip3_B32_lr2-4_pred-seq_local-device_pad.sh
+        bash scripts/test/unrealego2_pose-qa-avg-df_data-ue2_seq5_skip3_B32_lr2-4_pred-seq_local-device_pad.sh
 
-The pose predictions will be saved in `./results/UnrealEgoData2_test_pose (raw and zip versions)`.
+            --data_dir [path to the `UnrealEgoData2_test_rgb` dir]
+            --metadata_dir [path to the `UnrealEgoData2_test_sfm` dir]
+
+Please modify the arguments above. The pose predictions will be saved in `./results/UnrealEgoData2_test_pose (raw and zip versions)`.
 
 #### Inference on UnrealEgo-RW test dataset
 
-        # Without fine-tuning
-        bash scripts/test/unrealego2_pose/unrealego2_pose-qa-avg-df_data-ue-rw_seq5_skip3_B32_lr2-4_pred-seq_local-device_pad.sh
+- Model without pre-training on UnrealEgo2
+  
+        bash scripts/test/unrealego2_pose-qa-avg-df_data-ue-rw_seq5_skip3_B32_lr2-4_pred-seq_local-device_pad.sh
 
-        # With fine-tuning
-        bash scripts/test/unrealego2_pose_finetuning/unrealego2_pose-qa-avg-df_data-ue2_seq5_skip3_B32_lr2-4_pred-seq_local-device_pad_finetuning_epoch5-5.sh
+            --data_dir [path to the `UnrealEgoData_rw_test_rgb` dir]
+            --metadata_dir [path to the `UnrealEgoData_rw_test_sfm` dir]
 
-The pose predictions will be saved in `./results/UnrealEgoData_rw_test_pose (raw and zip versions)`.
+- Model with pre-training on UnrealEgo2
+  
+        bash scripts/test/unrealego2_pose-qa-avg-df_data-ue2_seq5_skip3_B32_lr2-4_pred-seq_local-device_pad_finetuning_epoch5-5.sh
+
+            --data_dir [path to the `UnrealEgoData_rw_test_rgb` dir]
+            --metadata_dir [path to the `UnrealEgoData_rw_test_sfm` dir]
+
+Please modify the arguments above. The pose predictions will be saved in `./results/UnrealEgoData_rw_test_pose (raw and zip versions)`.
 
 **For quantitative results of your methods, please follow the instructions in [our benchmark challenge page](https://unrealego.mpi-inf.mpg.de/) and submit a zip version.**
 
