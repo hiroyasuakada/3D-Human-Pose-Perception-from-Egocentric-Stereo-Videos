@@ -52,6 +52,10 @@ We tested our code with the following dependencies:
 - PyTorch 2.0.0
 - Cuda 11.7
 
+Please install other dependencies:
+    
+    pip install -r requirements.txt    
+
 ### Inference
 
 #### Trained models
