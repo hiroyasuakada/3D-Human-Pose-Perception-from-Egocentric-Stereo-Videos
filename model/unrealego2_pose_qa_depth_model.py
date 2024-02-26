@@ -30,18 +30,6 @@ class UnrealEgo2PoseQADepthModel(BaseModel):
         self.net_HeatMap = network.define_HeatMap(opt, model=opt.model)
         self.net_Pose = network.define_Pose(opt, model=opt.model)
 
-        self.load_networks(
-            net=self.net_HeatMap,
-            path_to_trained_weights=opt.path_to_trained_heatmap
-            )
-        network._freeze(self.net_HeatMap)
-
-        if opt.path_to_trained_pose:
-            self.load_networks(
-                net=self.net_Pose,
-                path_to_trained_weights=opt.path_to_trained_pose
-                )
-
         if opt.compile:
             self.net_HeatMap = torch.compile(self.net_HeatMap)
             self.net_Pose = torch.compile(self.net_Pose)
