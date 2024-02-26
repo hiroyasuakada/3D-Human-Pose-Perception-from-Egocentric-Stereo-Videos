@@ -1,14 +1,3 @@
-#!/bin/bash
-#SBATCH -p gpu20
-#SBATCH --gres gpu:1
-#SBATCH -c 16
-#SBATCH -t 1-23:59:55
-#SBATCH -o slurm/output_test_%j.txt
-#SBATCH --mem 64G
-
-
-# conda
-source activate py39
 
 # script
 python predict_pose.py \
