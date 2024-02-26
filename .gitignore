@@ -162,5 +162,4 @@ cython_debug/
 slurm
 log/*
 results/*
-requirements.txt
 scripts/test/unrealego2/*.sh
