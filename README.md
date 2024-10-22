@@ -27,10 +27,11 @@ Official PyTorch inference code of our CVPR 2024 paper, **"3D Human Pose Percept
 
 You can download the **UnrealEgo2/UnrealEgo-RW datasets** on [our benchmark challenge page](https://unrealego.mpi-inf.mpg.de/).
 
+Note that UnrealEgo2 is fully compatible with [UnrealEgo](https://github.com/hiroyasuakada/UnrealEgo). The test data of UnrealEgo is **publicly available**, including 72 body joint annotations (32 for body and 40 for hand), whereas the test data of UnrealEgo2 and UnrealEgo-RW are not (See "Evaluation" section of our benchmark challenge page).
 
 ## Depths from SfM/Metashape
 
-You can donwload depth data from SfM/Metashape described in our paper.
+You can download depth data from SfM/Metashape described in our paper.
 
 - <a href="https://unrealego.mpi-inf.mpg.de/data/download_unrealego2_test_sfm.sh" download>Depth from UnrealEgo2 test split</a>
 - <a href="https://unrealego.mpi-inf.mpg.de/data/download_unrealego_rw_test_sfm.sh" download>Depth from UnrealEgo-RW test split</a>
@@ -38,7 +39,7 @@ You can donwload depth data from SfM/Metashape described in our paper.
         bash download_unrealego2_test_sfm.sh
         bash download_unrealego_rw_test_sfm.sh
 
-Note that these depth data are different from the synthetic depth maps available on [our benchmark challenge page](https://unrealego.mpi-inf.mpg.de/).
+Note that these depth data differ from the synthetic pixel-perfect depth maps available on [our benchmark challenge page](https://unrealego.mpi-inf.mpg.de/).
 
 
 ## Implementation
@@ -90,4 +91,6 @@ Please modify the arguments above. The pose predictions will be saved in `./resu
 Please modify the arguments above. The pose predictions will be saved in `./results/UnrealEgoData_rw_test_pose (raw and zip versions)`.
 
 **For quantitative results of your methods, please follow the instructions in [our benchmark challenge page](https://unrealego.mpi-inf.mpg.de/) and submit a zip version.**
+
+Also, note that UnrealEgo2 is fully compatible with [UnrealEgo](https://github.com/hiroyasuakada/UnrealEgo). This means that you can train your method on UnrealEgo2 and test it on UnrealEgo, and vice versa. The test data of UnrealEgo is **publicly available**, including 72 body joint annotations (32 for body and 40 for hand), whereas the test data of UnrealEgo2 and UnrealEgo-RW are not (See "Evaluation" section of our benchmark challenge page).
 
