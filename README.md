@@ -59,6 +59,8 @@ Please install other dependencies:
 
 ### Inference
 
+Our inference code automatically generates submittable zip files of the predictions as described in our benchmark challenge page.
+
 #### Trained models
 
 You can download [our trained models](https://drive.google.com/drive/folders/1NQ08KHKNl3iyrcWzgMlUfCoFlQnn97ve?usp=drive_link). Please save them in `./log/(experiment_name)`.
