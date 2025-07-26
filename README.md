@@ -1,6 +1,6 @@
 # 3D-Human-Pose-Perception-from-Egocentric-Stereo-Videos (CVPR 2024)
 
-Official PyTorch inference code of our CVPR 2024 paper, **"3D Human Pose Perception from Egocentric Stereo Videos"**.
+The official PyTorch inference code of our CVPR 2024 paper, **"3D Human Pose Perception from Egocentric Stereo Videos"**.
 
 ![img](doc/overview_setup.png)
 
