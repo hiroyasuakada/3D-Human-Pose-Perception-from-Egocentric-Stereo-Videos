@@ -11,12 +11,12 @@ The official PyTorch inference code of our CVPR 2024 paper, **"3D Human Pose Per
 ## Citation
 
 ```
-    @inproceedings{hakada2024unrealego2,
-      title = {3D Human Pose Perception from Egocentric Stereo Videos},
-      author = {Akada, Hiroyasu and Wang, Jian and Golyanik, Vladislav and Theobalt, Christian},
-      booktitle = {Computer Vision and Pattern Recognition (CVPR)},
-      year = {2024}
-    }
+@inproceedings{hakada2024unrealego2,
+  title = {3D Human Pose Perception from Egocentric Stereo Videos},
+  author = {Akada, Hiroyasu and Wang, Jian and Golyanik, Vladislav and Theobalt, Christian},
+  booktitle = {Computer Vision and Pattern Recognition (CVPR)},
+  year = {2024}
+}
 ```
 
 
