@@ -6,7 +6,7 @@ The official PyTorch inference code of our CVPR 2024 paper, **"3D Human Pose Per
 
 **For any questions, please contact the first author, Hiroyasu Akada [hakada@mpi-inf.mpg.de] .**
 
-[[Project Page](https://4dqv.mpi-inf.mpg.de/UnrealEgo2/)] [[Benchmark Challenge](https://unrealego.mpi-inf.mpg.de/)]
+[[Project Page](https://4dqv.mpi-inf.mpg.de/UnrealEgo2/)] [[Dataset Page](https://unrealego.mpi-inf.mpg.de/)]
 
 ## Citation
 
