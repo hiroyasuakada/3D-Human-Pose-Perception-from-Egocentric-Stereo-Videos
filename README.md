@@ -19,19 +19,23 @@ The official PyTorch inference code of our CVPR 2024 paper, **"3D Human Pose Per
 }
 ```
 
+# Updates
+
+- 12/12/2025: We decided to release the test split of UnrealEgo2 and UnrealEgo-RW to facilitate the field of egocentric 3D vision.
+
 
 
 ## UnrealEgo2/UnrealEgo-RW Datasets
 
 ### Download
 
-You can download the **UnrealEgo2/UnrealEgo-RW datasets** on [our benchmark challenge page](https://unrealego.mpi-inf.mpg.de/).
+You can download the **UnrealEgo2/UnrealEgo-RW datasets** on [our dataset page](https://unrealego.mpi-inf.mpg.de/).
 
-Note that UnrealEgo2 is fully compatible with [UnrealEgo](https://github.com/hiroyasuakada/UnrealEgo). The test data of UnrealEgo is **publicly available**, including 72 body joint annotations (32 for body and 40 for hand), whereas the test data of UnrealEgo2 and UnrealEgo-RW are not (See "Evaluation" section of our benchmark challenge page).
+**[12 Dec, 2025]**: We decided to release the test split of UnrealEgo2 and UnrealEgo-RW to facilitate the field of egocentric 3D vision!
 
 ## Depths from SfM/Metashape
 
-You can download depth data from SfM/Metashape described in our paper.
+You can download depth data from SfM/Metashape, as described in our paper.
 
 - <a href="https://unrealego.mpi-inf.mpg.de/data/download_unrealego2_test_sfm.sh" download>Depth from UnrealEgo2 test split</a>
 - <a href="https://unrealego.mpi-inf.mpg.de/data/download_unrealego_rw_test_sfm.sh" download>Depth from UnrealEgo-RW test split</a>
@@ -58,8 +62,6 @@ Please install other dependencies:
     pip install -r requirements.txt    
 
 ### Inference
-
-Our inference code automatically generates submittable zip files of the predictions as described in our benchmark challenge page.
 
 #### Trained models
 
@@ -92,7 +94,8 @@ Please modify the arguments above. The pose predictions will be saved in `./resu
 
 Please modify the arguments above. The pose predictions will be saved in `./results/UnrealEgoData_rw_test_pose (raw and zip versions)`.
 
-**For quantitative results of your methods, please follow the instructions in [our benchmark challenge page](https://unrealego.mpi-inf.mpg.de/) and submit a zip version.**
+Note that UnrealEgo2 is fully compatible with [UnrealEgo](https://4dqv.mpi-inf.mpg.de/UnrealEgo/). This means that you can train your method on UnrealEgo2 and test it on UnrealEgo, and vice versa.
 
-Also, note that UnrealEgo2 is fully compatible with [UnrealEgo](https://github.com/hiroyasuakada/UnrealEgo). This means that you can train your method on UnrealEgo2 and test it on UnrealEgo, and vice versa. The test data of UnrealEgo is **publicly available**, including 72 body joint annotations (32 for body and 40 for hand), whereas the test data of UnrealEgo2 and UnrealEgo-RW are not (See "Evaluation" section of our benchmark challenge page).
+The UnrealEgo dataset (train/validation/test splits) is also publicly available [here](https://github.com/hiroyasuakada/UnrealEgo), including 72 body joint annotations (32 for body and 40 for hand).
+
 
